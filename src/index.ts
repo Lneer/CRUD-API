@@ -1,26 +1,30 @@
 import { createReadStream } from 'fs';
 import { createServer } from 'http';
 import data from './data';
-const DBPATH = 'data.ts';
+const DBPATH = './src/data.json';
 
 const PORT = process.env.PORT || 5000;
 
-const server = createServer(async (req, res) => {
 
+const server = createServer(async (req, res) => {
+	const path = req.url ? req.url : ''
+	const pathArr = path.split('/')
+	const url = new URL(path)
 	const routeId = req.url?.split('/')[3];
 
 	if (req.url === '/api/users' && !routeId && req.method === 'GET') {
+
+		const readStream = createReadStream(DBPATH)
 		res.writeHead(200, { "Content-Type": "application/json" });
-		res.write(JSON.stringify(data))
-		res.end();
+		readStream.on('data', (chunk) => res.write(chunk))
+		readStream.on('end', () => res.end())
+		readStream.on('error', () => { res.writeHead(500, { "DataError": "server error" }); res.end("Server Error") })
 	}
 
 	if (req.url === `/api/users/${routeId}` && req.method === 'GET') {
 		res.writeHead(200, { "Content-Type": "application/json" });
 
-		const response = data.find((elem) => elem._id === routeId)
-		res.write(JSON.stringify(response))
-		res.end();
+		res.end(JSON.stringify(routeId));
 	}
 
 	else {
