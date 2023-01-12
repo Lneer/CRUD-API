@@ -1,19 +1,32 @@
-
 {
   "scripts": {
-
-  "start": "npx nodemon ./src/index.ts 3000"
-
-},
+    "start": "nodemon"
+  },
   "dependencies": {
     "dotenv": "^16.0.3",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.17",
+    "@types/uuid": "^9.0.0",
     "cross-env": "^7.0.3",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "tslib": "^2.4.1"
-  }
+  },
+  "name": "crud-api",
+  "description": "Task is to implement simple CRUD API using in-memory database underneath.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lneer/CRUD-API.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lneer/CRUD-API/issues"
+  },
+  "homepage": "https://github.com/Lneer/CRUD-API#readme"
 }
