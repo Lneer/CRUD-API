@@ -3,15 +3,18 @@ import { v4 as uuidv4 } from 'uuid';
 
 const users: User[] = [];
 
-const getUsers = (): Promise<User[]> => new Promise((res, rej) => {
-	try {
-		res(users);
-	} catch (error) {
-		rej(error)
+export const getUsers = (): Promise<User[]> => new Promise((res, rej) => {
+
+	if (users && Array.isArray(users)) {
+		res(users)
+	}
+	else {
+		rej(new Error('Data not found'))
 	}
 });
 
-const getUserById = (id: string): Promise<User | undefined> => new Promise((res, rej) => {
+
+export const getUserById = (id: string): Promise<User | undefined> => new Promise((res, rej) => {
 	try {
 		const user = users.find((item) => item._id === id)
 		res(user);
@@ -20,7 +23,7 @@ const getUserById = (id: string): Promise<User | undefined> => new Promise((res,
 	}
 });
 
-const addUser = (user: User): Promise<User[]> => new Promise((res, rej) => {
+export const addUser = (user: User): Promise<User[]> => new Promise((res, rej) => {
 	users.push({ ...user, _id: uuidv4() })
 	try {
 		res(users);
@@ -29,7 +32,7 @@ const addUser = (user: User): Promise<User[]> => new Promise((res, rej) => {
 	}
 });
 
-const deleteUser = (id: string): Promise<User[]> => new Promise((res, rej) => {
+export const deleteUser = (id: string): Promise<User[]> => new Promise((res, rej) => {
 	const userIndex = users.findIndex((item) => item._id === id);
 	if (userIndex !== -1) {
 		users.splice(userIndex, 1)
