@@ -3,17 +3,25 @@
     "start": "nodemon"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
-    "typescript": "^4.9.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.17",
     "@types/uuid": "^9.0.0",
-    "cross-env": "^7.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "@typescript-eslint/parser": "^5.48.1",
+    "eslint": "^8.32.0",
+    "eslint-config-standard-with-typescript": "^27.0.1",
+    "eslint-plugin-import": "^2.27.4",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
-    "tslib": "^2.4.1"
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.4"
   },
   "name": "crud-api",
   "description": "Task is to implement simple CRUD API using in-memory database underneath.",

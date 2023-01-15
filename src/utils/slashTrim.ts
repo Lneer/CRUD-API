@@ -1,19 +1,15 @@
-export function slashTrim(str?: string): string | undefined {
-	if (!str) {
-		return
-	};
+export const slashTrim = (str?: string): undefined | string => {
+  if (!str) {
+    return undefined;
+  }
 
-	console.log('func start');
-	let res = str
-	if (str[0] === '/') {
-		console.log('del start');
-		res = res.slice(1)
-	}
+  let res = str;
+  if (str[0] === '/') {
+    res = res.slice(1);
+  }
 
-	if (str[str.length - 1] === '/') {
-		console.log('del end');
-		res = res.slice(0, str.length - 2)
-	}
-	console.log('func end');
-	return res
-}
+  if (str[str.length - 1] === '/') {
+    res = res.slice(0, str.length - 2);
+  }
+  return res;
+};
