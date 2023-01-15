@@ -5,6 +5,7 @@ import {
 } from '../models/usersMethods';
 import { getBody } from '../utils/getBody';
 import { idValidate } from '../utils/idValidate';
+import { bodyFieldsValidate } from '../utils/bodyFieldsValidate';
 
 export const userRoutes = async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
   const path = getEndPoint(req.url);
@@ -45,6 +46,11 @@ export const userRoutes = async (req: IncomingMessage, res: ServerResponse): Pro
   if (path === 'api/users' && req.method === 'POST') {
     try {
       const body = await getBody(req);
+      if (!bodyFieldsValidate(body)) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end('uncorrected users data');
+        return;
+      }
       const users = await addUser(body);
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.write(JSON.stringify(users));
