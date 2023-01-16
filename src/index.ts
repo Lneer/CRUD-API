@@ -1,33 +1,37 @@
 import { createServer } from 'http';
-import { StatusCode } from './constants/constants';
+import {
+  ApiData, OperationMessage, Processes, StatusCode,
+} from './constants/constants';
 import { ballancer } from './ballancer/ballancer';
 import { userRoutes } from './routes/userRoutes';
 import { slashTrim } from './utils/slashTrim';
 
 require('dotenv').config();
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || ApiData.DefaultPort;
 
 export const server = createServer(async (req, res) => {
-  if (slashTrim(req.url)?.includes('api/users')) {
+  console.log(Processes.Current, process.pid);
+
+  if (slashTrim(req.url)?.includes(ApiData.BASE_URL)) {
     await userRoutes(req, res);
     res.on('error', () => {
-      res.writeHead(StatusCode.OK, { 'Content-Type': 'application/json' });
-      res.end('Server is broken');
+      res.writeHead(StatusCode.ServerDown, { 'Content-Type': 'application/json' });
+      res.end(OperationMessage.ServerDown);
     });
   } else {
     res.writeHead(StatusCode.NotFound, { 'Content-Type': 'application/json' });
-    res.end('page not found');
+    res.end(OperationMessage.NotFoundPath);
   }
 });
 
 if (process.env.NODE_MULTI) {
   ballancer(() => {
     server.listen(PORT, () => {
-      console.log(`{Processes.Run} ${PORT}`);
-      console.log('Processes.Current', process.pid);
+      console.log(`${Processes.Run} ${PORT}`);
+      console.log(Processes.Current, process.pid);
     });
   });
 } else {
-  server.listen(PORT, () => console.log(`{Processes.Run} ${PORT}`));
+  server.listen(PORT, () => console.log(`${Processes.Run} ${PORT}`));
 }

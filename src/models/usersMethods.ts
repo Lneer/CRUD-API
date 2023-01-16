@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '../types/user';
+import { OperationMessage } from '../constants/constants';
 
 const users: User[] = [];
 
@@ -12,43 +13,40 @@ export const getUsers = (): Promise<User[]> => new Promise((res, rej) => {
 });
 
 export const getUserById = (id: string): Promise<User | undefined> => new Promise((res, rej) => {
-  const user = users.find((item) => item._id === id);
+  const user = users.find((item) => item.id === id);
 
   if (!user) {
-    rej(new Error('User not found'));
+    rej(new Error(OperationMessage.NotFound));
+    return;
   }
   res(user);
 });
 
-export const addUser = (user: Omit<User, '_id'>): Promise<User> => new Promise((res, rej) => {
-  const keys = Object.keys(user);
-  keys.forEach((key) => {
-    if (!user[key as keyof Omit<User, '_id'>]) {
-      rej(new Error(`${key} not found`));
-    }
-  });
-
-  const addedUser: User = { ...user, _id: uuidv4() };
+export const addUser = (user: User): Promise<User> => new Promise((res) => {
+  const addedUser: User = { ...user, id: uuidv4() };
   users.push(addedUser);
   res(addedUser);
 });
 
-export const deleteUser = (id: string): Promise<User[]> => new Promise((res, rej) => {
-  const userIndex = users.findIndex((item) => item._id === id);
-
-  if (userIndex === -1) {
-    rej(new Error('User not found'));
+export const deleteUser = (id: string): Promise<User> => new Promise((res, rej) => {
+  const userIndex = users.findIndex((item) => item.id === id);
+  if (userIndex < 0) {
+    rej(new Error(OperationMessage.NotFound));
+    return;
   }
 
+  const user = users[userIndex];
   users.splice(userIndex, 1);
-  res(users);
+  res(user);
 });
 
-export const updateUser = (user: User): Promise<User[]> => new Promise((res, rej) => {
-  const userIndex = users.findIndex((item) => item._id === user._id);
-  if (userIndex === -1) {
-    rej(new Error('User not found'));
+export const updateUser = (user: User): Promise<User> => new Promise((res, rej) => {
+  const userIndex = users.findIndex((item) => item.id === user.id);
+  console.log(userIndex);
+  if (userIndex < 0) {
+    rej(new Error(OperationMessage.NotFound));
+    return;
   }
   users.splice(userIndex, 1, user);
-  res(users);
+  res(user);
 });
