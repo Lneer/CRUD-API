@@ -1,7 +1,15 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "jest": true
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [".js", ".ts", ".test.ts"]
+        }
+      }
     },
     "extends": ["airbnb-base"],
     "parser": "@typescript-eslint/parser",
@@ -29,13 +37,7 @@
         "no-shadow": "off",
         "no-unused-vars": "off",
         "@typescript-eslint/no-shadow": ["error"],
-        "@typescript-eslint/no-unused-vars": "error"
-    },
-    "settings": {
-        "import/resolver": {
-          "node": {
-            "extensions": [".js", ".ts"]
-          }
-        }
-      }
+        "@typescript-eslint/no-unused-vars": "error",
+        "import/no-extraneous-dependencies": ["off", {"devDependencies": ["**/*.test.js", "**/*.spec.js"]}]
+    }
 }
